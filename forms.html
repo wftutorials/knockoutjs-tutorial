@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sample Knockoutjs App</title>
+  <script
+    src="https://code.jquery.com/jquery-3.4.1.min.js"
+    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+    crossorigin="anonymous"></script>
+</head>
+<body>
+
+<p data-bind="text:submission">Results</p>
+<form data-bind="submit:showData">
+  <input type="text" data-bind="textInput:name"/><br>
+  <select data-bind="options: optionValues, value: selectedOptionValue"></select><br>
+  <textarea data-bind="value:message"></textarea><br>
+  <input type="checkbox" data-bind="checked: rememberMe" /> Remember me<br>
+  <button type="submit">Submit</button>
+</form>
+
+<script type='text/javascript' src='./js/knockout-3.5.0.js'></script>
+<script>
+  function View(){
+      var self = this;
+      this.submission = ko.observable("Results:");
+      this.name = ko.observable('');
+      this.optionValues= ["Alpha", "Beta", "Gamma"];
+      this.selectedOptionValue = ko.observable("Gamma");
+      this.message = ko.observable("");
+      this.rememberMe = ko.observable(true);
+      this.showData =  function(form){
+          var data = {
+              name : self.name(),
+              rays : self.selectedOptionValue(),
+              message : self.message(),
+              rememberMe : self.rememberMe()
+          };
+          $.post('url', data, function(){
+
+          });
+
+         console.log(data);
+      }
+  }
+
+  ko.applyBindings(new View());
+</script>
+</body>
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sample Knockoutjs App</title>
+  <script
+    src="https://code.jquery.com/jquery-3.4.1.min.js"
+    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+    crossorigin="anonymous"></script>
+</head>
+<style>
+  table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+  }
+</style>
+<body>
+Searching <input data-bind="textInput:query" type="text"/><br><br>
+<table>
+  <thead>
+  <tr><th>Full Name</th><th>Username</th><th>Email</th><th>Website</th></tr>
+  </thead>
+  <tbody data-bind="foreach: users">
+  <tr>
+    <td data-bind="text: name"></td>
+    <td data-bind="text: username"></td>
+    <td data-bind="text: email"></td>
+    <td data-bind="text: website"></td>
+  </tr>
+  </tbody>
+</table>
+
+<script type='text/javascript' src='./js/knockout-3.5.0.js'></script>
+<script>
+  function View(data){
+      var self = this;
+      var allUsers = data;
+      this.query = ko.observable("");
+      this.users = ko.observableArray(data);
+      this.query.subscribe(function(newValue) {
+          var currentQuery = newValue.toLowerCase();
+          console.log(currentQuery);
+          var filteredUsers = self.users().filter((u) => {
+              return u.name.toLowerCase().includes(currentQuery) || u.website.toLowerCase().includes(currentQuery)
+          });
+          if(currentQuery != "" && filteredUsers.length > 0){
+              self.users(filteredUsers);
+          }else{
+              self.users(allUsers)
+          }
+      });
+  }
+
+  function getUsers(){
+      $.get("https://jsonplaceholder.typicode.com/users/", function(returnedData) {
+          // This callback is executed if the post was successful
+          ko.applyBindings(new View(returnedData));
+      })
+  }
+
+  getUsers();
+</script>
+</body>
+</html>

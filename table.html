@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sample Knockoutjs App</title>
+  <script
+    src="https://code.jquery.com/jquery-3.4.1.min.js"
+    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+    crossorigin="anonymous"></script>
+</head>
+<style>
+  table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+  }
+</style>
+<body>
+<table>
+  <thead>
+  <tr><th>Full Name</th><th>Username</th><th>Email</th><th>Website</th></tr>
+  </thead>
+  <tbody data-bind="foreach: users">
+  <tr>
+    <td data-bind="text: name"></td>
+    <td data-bind="text: username"></td>
+    <td data-bind="text: email"></td>
+    <td data-bind="text: website"></td>
+  </tr>
+  </tbody>
+</table>
+
+<script type='text/javascript' src='./js/knockout-3.5.0.js'></script>
+<script>
+  function View(data){
+      var self = this;
+      this.users = ko.observableArray(data);
+  }
+
+  function getUsers(){
+      $.get("https://jsonplaceholder.typicode.com/users/", function(returnedData) {
+          // This callback is executed if the post was successful
+          ko.applyBindings(new View(returnedData));
+      })
+  }
+
+  getUsers();
+</script>
+</body>
+</html>

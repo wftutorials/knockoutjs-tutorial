@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sample Knockoutjs App</title>
+</head>
+<body>
+
+<p data-bind="text:message">Output</p>
+<button data-bind="click:registerClick">Click me</button>
+
+<script type='text/javascript' src='./js/knockout-3.5.0.js'></script>
+<script>
+  function View(){
+      this.message = ko.observable("Output");
+      this.clickCounter = ko.observable(0);
+      this.registerClick =  function(){
+          this.clickCounter(this.clickCounter() +1);
+          this.message("You have clicked: " + this.clickCounter());
+      }
+  }
+
+  ko.applyBindings(new View());
+</script>
+</body>
+</html>
